@@ -1,0 +1,29 @@
+<app-header/>
+<app-slider></app-slider>
+<div id="home">
+    <div class="center">
+      <div id="contenido">
+        <h1 class="subheader">{{ globalText.ourCategories }}</h1>
+        <div id="listCards">
+            <div class="colLista">
+
+
+              <div class="cardd" *ngFor="let categoria of arrayCategorias; let i = index">
+                <div class="image">
+                  <img src="https://png.pngtree.com/png-vector/20200103/ourmid/pngtree-set-of-junk-food-hand-drawn-doodle-png-image_2107377.jpg" alt="comida" />
+                </div>
+                <div class="contenidooo">
+                  <h3>{{categoria.nombre}}</h3>
+                  <button (click)="navigateToUrlWithData(i)">
+                    {{globalText.SeeProducts}}
+                  </button>
+                </div>
+               </div>
+
+            </div>
+          </div>
+     
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
