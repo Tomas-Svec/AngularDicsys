@@ -21,7 +21,8 @@ export class ProductosComponent implements OnInit {
  
 
   arrayProductosByCategorias: any;
-  nombreProducto: string | undefined;
+  idProducto: number | undefined; //Almaceno id y nombre
+  nombreProducto: string | undefined; 
 
 
   constructor (
@@ -31,17 +32,27 @@ export class ProductosComponent implements OnInit {
     public serviceProduct: ProductosService
   ){
 
- 
-    this.serviceProduct.getProductoById('2').subscribe(result => {
-      this.arrayProductosByCategorias = [result]; // Convierte el objeto en un arreglo
-    });
-    
 
   }
-  
-  ngOnInit(): void {
-    this.nombreProducto = history.state.nombre;
-    console.log(this.nombreProducto);    
+
+
+ngOnInit(): void {
+  // Obtengo id y el nombr
+  this.idProducto = history.state.id; //Saco el id 
+  this.nombreProducto = history.state.nombre; // Capturo el nombre
+
+  // Verifica si el id está definido antes de llamar al servicio
+  if (this.idProducto) {
+    this.getProductById(this.idProducto);
   }
+}
+
+// Consultar el producto por ID
+getProductById(id: number) {
+  this.serviceProduct.getProductoById(id.toString()).subscribe(result => {
+    this.arrayProductosByCategorias = [result]; // Convierte el objeto en un arreglo
+  });
+}
+
   
 }

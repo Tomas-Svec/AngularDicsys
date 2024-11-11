@@ -1,5 +1,5 @@
 import { UrlNavigateService } from '../../../data/services/url-navigate.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SliderComponent } from "../../components/slider/slider.component";
 import { Globalurl } from '../../../data/url';
@@ -7,18 +7,20 @@ import { GlobalText } from '../../../data/text';
 import { FooterComponent } from "../../components/footer/footer.component";
 import { NgFor } from '@angular/common';
 import { CategoriasService } from '../../../data/services/categorias/categorias.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, SliderComponent, FooterComponent, NgFor],
+  imports: [CommonModule,HeaderComponent, SliderComponent, FooterComponent, NgFor],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent{
 
   arrayCategorias: any;
+  errorMessage: string = ''; 
 
   constructor (
     public urlNavigateSerice: UrlNavigateService, 
@@ -29,27 +31,21 @@ export class HomeComponent{
 
     this.categoriasService.getCategorias().subscribe((result) =>{
       this.arrayCategorias = result;
-    })
+    },
+    (error) =>{
+      this.errorMessage = 'No se pudo cargar las categorías. Intenta nuevamente más tarde.'; // Si hay un error en la API
+        console.error('Error al obtener las categorías:', error); 
+    }
+  );
     
     }
+  
 
-    navigateToUrlWithData(index: number) {
-      // Selecciona el nombre basado en el índice que el usuario elige
-      const nombre = this.arrayCategorias[index]?.nombre;
-    
-      // Envía solo este nombre a la otra página
+    navigateToProductById(id: number, nombre: string) {
       this.urlNavigateSerice.navigateToUrlWithData(this.globalurl.products, {
-        state: { nombre: nombre }
-      });
-
-      console.log(nombre);
-      
-    }
-
-
-
-  
-  
+        state: { id: id, nombre: nombre} // Envio el id y el nombre
+        });
+}
     
 }
 
